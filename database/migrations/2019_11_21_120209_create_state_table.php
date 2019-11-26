@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class State extends Migration
+class CreateStateTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class State extends Migration
      */
     public function up()
     {
-        Schema::create('state', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('country_id');
+        Schema::create('states', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('country_id');
             $table->string('name');
             $table->string('code');
-            $table->foreign('country_id')->references('id')->on('country');
+            $table->foreign('country_id')->references('id')->on('countries');
         });
     }
 

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Vendor;
-use App\Http\Requests\StoreVendor;
+use App\Models\Vendors;
+use App\Http\Requests\StoreVendors;
 use Illuminate\Support\Facades\DB;
 
 class VendorController extends Controller
@@ -26,8 +26,9 @@ class VendorController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        return view('vendor.index');
+    {   
+        $vendors = Vendors::paginate(5);
+        return view('vendor.index', ['vendors' => $vendors]);
     }
 
     /**
@@ -37,8 +38,8 @@ class VendorController extends Controller
      */
     public function create()
     {   
-        $countries = DB::table("country")->pluck('name', 'id');
-        return view('vendor.create', ['countries' => $countries]);
+        $countries = DB::table("countries")->pluck('name', 'id');
+        return view('vendor.create', compact('countries'));
     }
 
     /**
@@ -47,22 +48,26 @@ class VendorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreVendor $request)
-    {   
+    public function store(StoreVendors $request)
+    { 
+
         // Retrieve the validated input data...
         $validated = $request->validated();
-        dd($request);
-    }
+        
+        $vendors = new Vendors([
+            'name' => $request->get('name'),
+            'phone' => $request->get('phone'),
+            'gender' => $request->get('gender'),
+            'address' => $request->get('address'),
+            'city' => $request->get('city'),
+            'district_id' => $request->get('district'),
+            'state_id' => $request->get('state'),
+            'country_id' => $request->get('country')
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        return view('vendor.view');
+        $vendors->save();
+
+        return redirect('/vendor')->with('success', 'New vendor saved successfully!');
     }
 
     /**
@@ -73,19 +78,33 @@ class VendorController extends Controller
      */
     public function edit($id)
     {
-        return view('vendor._form');
+        $vendor = Vendors::findOrFail($id);
+        $countries = DB::table("countries")->pluck('name', 'id');
+        return view('vendor.edit', ['vendor' => $vendor , 'countries' => $countries]);  
     }
 
     /**
-     * Update the specified resource in storage.
+    * Update the specified resource in storage.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @param  int  $id
+    * @return \Illuminate\Http\Response
+    */
+    public function update(Request $request, $id)
+    {
+        dd($request);
+    }
+
+    /**
+     * Display the specified resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function show($id)
+    {   
+        $vendor = Vendors::findOrFail($id);
+        dd($vendor);
     }
 
     /**
@@ -95,7 +114,8 @@ class VendorController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        //
+    {   
+        $vendor = Vendors::findOrFail($id);
+        dd($vendor);
     }
 }

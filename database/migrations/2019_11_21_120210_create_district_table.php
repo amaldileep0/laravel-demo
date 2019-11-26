@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class District extends Migration
+class CreateDistrictTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class District extends Migration
      */
     public function up()
     {
-        Schema::create('district', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('state_id');
+        Schema::create('districts', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('state_id');
             $table->string('name');
             $table->string('code');
-            $table->foreign('state_id')->references('id')->on('state');
+            $table->foreign('state_id')->references('id')->on('states');
         });
     }
 

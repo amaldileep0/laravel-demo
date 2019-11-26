@@ -1,12 +1,13 @@
 @extends('layouts.app') 
 @section('content')
 <div class="container">
-    <h2>{{__('Create Vendor')}}</h2>
-    <form method="post" action="{{route('vendor.store')}}">
+    <h2>{{__('Update : '. ucwords($vendor->name))}}</h2>
+    <form method="post" action="{{route('vendor.update', $vendor->id)}}">
+        @method('PATCH') 
         @csrf
         <div class="form-group">
             <label for="name">{{ __('Name') }}</label>
-            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" placeholder="Enter Name" autocomplete="name" autofocus name="name"> @error('name')
+            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name"  autocomplete="name" value="{{ $vendor->name }}" name="name"> @error('name')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
             </span> @enderror
@@ -26,7 +27,7 @@
         </div>
         <div class="form-group">
             <label for="phone">{{ __('Phone') }}</label>
-            <input type="text" class="form-control @error('phone') is-invalid @enderror" id="phone" placeholder="Enter Phone Number" name="phone">
+            <input type="text" class="form-control @error('phone') is-invalid @enderror" id="phone" value="{{ $vendor->phone }}" name="phone">
              @error('phone')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
@@ -37,6 +38,10 @@
             <select class="form-control @error('country') is-invalid @enderror" name="country" id="country">
                 <option selected="selected" value="">Choose Country</option>
                 @foreach ($countries as $key => $country)
+                    @if ($vendor->country->id == $key)
+                    <option value="{{ $key }}" selected>{{ $country }}</option>
+                    @continue
+                    @endif
                     <option value="{{ $key }}">{{ $country }}</option>
                 @endforeach
             </select>
@@ -67,7 +72,7 @@
         </div>
         <div class="form-group">
             <label for="city">{{ __('City') }}</label>
-            <input type="text" class="form-control @error('city') is-invalid @enderror" id="city" placeholder="Enter City" name="city">
+            <input type="text" class="form-control @error('city') is-invalid @enderror" value="{{$vendor->city}}" id="city" name="city">
             @error('city')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
@@ -75,7 +80,7 @@
         </div>
         <div class="form-group">
             <label for="address">{{ __('Address') }}</label>
-            <textarea class="form-control @error('address') is-invalid @enderror" rows="5" name="address" id="address"></textarea>
+            <textarea class="form-control @error('address') is-invalid @enderror" rows="5" name="address" id="address">{{$vendor->address}}</textarea>
             @error('address')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>

@@ -19,4 +19,8 @@ Auth::routes();
 
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 
+Route::get('dropdownlist/get_states/{id}', 'DataController@getStates');
+
+Route::get('dropdownlist/get_districts/{id}', 'DataController@getDistricts');
+
 Route::resource('vendor', 'VendorController');

@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreVendor extends FormRequest
+class StoreVendors extends FormRequest
 {
     
     /**
@@ -31,7 +31,7 @@ class StoreVendor extends FormRequest
                 'required',
                 'min:10',
                 'regex:/^([0-9\s\-\+\(\)]*)$/',
-                'unique:vendor'
+                'unique:vendors'
             ],
             'gender' => [
                 'required',
