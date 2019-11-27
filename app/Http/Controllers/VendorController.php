@@ -55,14 +55,14 @@ class VendorController extends Controller
         $validated = $request->validated();
         
         $vendors = new Vendors([
-            'name' => $request->get('name'),
-            'phone' => $request->get('phone'),
-            'gender' => $request->get('gender'),
-            'address' => $request->get('address'),
-            'city' => $request->get('city'),
-            'district_id' => $request->get('district'),
-            'state_id' => $request->get('state'),
-            'country_id' => $request->get('country')
+            'name' => $request->input('name'),
+            'phone' => $request->input('phone'),
+            'gender' => $request->input('gender'),
+            'address' => $request->input('address'),
+            'city' => $request->input('city'),
+            'district_id' => $request->input('district'),
+            'state_id' => $request->input('state'),
+            'country_id' => $request->input('country')
         ]);
 
         $vendors->save();
@@ -80,7 +80,17 @@ class VendorController extends Controller
     {
         $vendor = Vendors::findOrFail($id);
         $countries = DB::table("countries")->pluck('name', 'id');
-        return view('vendor.edit', ['vendor' => $vendor , 'countries' => $countries]);  
+        $states = DB::table("states")->where("country_id", $vendor->country->id)->pluck("name", "id");
+        $districts = DB::table("districts")->where("state_id", $vendor->state->id)->pluck("name", "id");
+        
+        return view('vendor.edit', 
+            [
+                'vendor' => $vendor,
+                'countries' => $countries,
+                'states' => $states,
+                'districts' => $districts
+            ]
+        );  
     }
 
     /**
@@ -90,9 +100,23 @@ class VendorController extends Controller
     * @param  int  $id
     * @return \Illuminate\Http\Response
     */
-    public function update(Request $request, $id)
+    public function update(StoreVendors $request, Vendors $vendor)
     {
-        dd($request);
+        // Retrieve the validated input data...
+        $validated = $request->validated();
+
+        $vendor->name = $request->input('name');
+        $vendor->phone = $request->input('phone');
+        $vendor->gender = $request->input('gender');
+        $vendor->address = $request->input('address');
+        $vendor->city = $request->input('city');
+        $vendor->district_id = $request->input('district');
+        $vendor->state_id = $request->input('state');
+        $vendor->country_id = $request->input('country');
+
+        $vendor->save();
+        
+        return redirect('/vendor')->with('success', 'Vendor updated successfully!');
     }
 
     /**
@@ -116,6 +140,7 @@ class VendorController extends Controller
     public function destroy($id)
     {   
         $vendor = Vendors::findOrFail($id);
-        dd($vendor);
+        $vendor->delete();
+        return redirect('/vendor')->with('success', 'Vendor deleted!');
     }
 }

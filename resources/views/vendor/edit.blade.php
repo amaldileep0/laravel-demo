@@ -16,9 +16,9 @@
             <label for="country">{{ __('Gender') }}</label>
             <div class="@error('gender') is-invalid @enderror">
                 <label class="radio-inline">
-                    <input type="radio" name="gender" value="male">Male</label>
+                    <input type="radio" name="gender" value="male" {{ ($vendor->gender == "male") ? "checked" : "" }} >Male</label>
                 <label class="radio-inline">
-                    <input type="radio" name="gender" value="female">Female</label>
+                    <input type="radio" name="gender" value="female" {{ ($vendor->gender == "female") ? "checked" : "" }}>Female</label>
             </div>
             @error('gender')
             <span class="invalid-feedback" role="alert">
@@ -38,11 +38,7 @@
             <select class="form-control @error('country') is-invalid @enderror" name="country" id="country">
                 <option selected="selected" value="">Choose Country</option>
                 @foreach ($countries as $key => $country)
-                    @if ($vendor->country->id == $key)
-                    <option value="{{ $key }}" selected>{{ $country }}</option>
-                    @continue
-                    @endif
-                    <option value="{{ $key }}">{{ $country }}</option>
+                    <option value="{{ $key }}" {{ ($vendor->country->id == $key) ? "selected" : "" }}>{{ $country }}</option>
                 @endforeach
             </select>
             @error('country')
@@ -53,7 +49,10 @@
         <div class="form-group">
             <label for="state">{{ __('State') }}</label>
             <select class="form-control @error('state') is-invalid @enderror" name="state" id="state">
-                <option selected="selected" value="">Choose Country</option>
+                <option selected="selected" value="">Choose State</option>
+                @foreach ($states as $key => $state)
+                    <option value="{{ $key }}" {{ ($vendor->state->id == $key) ? "selected" : "" }}>{{ $state }}</option>
+                @endforeach
             </select>
             @error('state')
             <span class="invalid-feedback" role="alert">
@@ -64,6 +63,9 @@
             <label for="district">{{ __('District') }}</label>
             <select class="form-control @error('district') is-invalid @enderror" name="district" id="district">
                 <option selected="selected" value="">Choose District</option>
+                @foreach ($districts as $key => $district)
+                    <option value="{{ $key }}" {{ ($vendor->district->id == $key) ? "selected" : "" }} >{{ $district }}</option>
+                @endforeach
             </select>
             @error('district')
             <span class="invalid-feedback" role="alert">

@@ -24,14 +24,14 @@ class StoreVendors extends FormRequest
      * @return array
      */
     public function rules()
-    {
+    {   
         return [
             'name' => 'required|max:255',
             'phone' => [
                 'required',
                 'min:10',
                 'regex:/^([0-9\s\-\+\(\)]*)$/',
-                'unique:vendors'
+                 Rule::unique('vendors')->ignore($this->vendor),
             ],
             'gender' => [
                 'required',

@@ -6,28 +6,28 @@
         @csrf
         <div class="form-group">
             <label for="name">{{ __('Name') }}</label>
-            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" placeholder="Enter Name" autocomplete="name" autofocus name="name"> @error('name')
+            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" placeholder="Enter Name" autocomplete="name" value="{{ old('name') }}" autofocus name="name"> @error('name')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
             </span> @enderror
         </div>
         <div class="form-group">
-            <label for="country">{{ __('Gender') }}</label>
-            <div class="@error('gender') is-invalid @enderror">
+            <label for="gender">{{ __('Gender') }}</label>
+            <div class="form-control @error('gender') is-invalid @enderror">
                 <label class="radio-inline">
-                    <input type="radio" name="gender" value="male">Male</label>
+                    <input type="radio" name="gender" value="male" {{old('gender') == 'male' ? 'checked' : '' }}>Male</label>
                 <label class="radio-inline">
-                    <input type="radio" name="gender" value="female">Female</label>
+                    <input type="radio" name="gender" value="female" {{old('gender') == 'female' ? 'checked' : '' }}>Female</label>
             </div>
-            @error('gender')
+             @error('gender')
             <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
+                    <strong>{{ $message }}</strong>
             </span> @enderror
         </div>
         <div class="form-group">
             <label for="phone">{{ __('Phone') }}</label>
-            <input type="text" class="form-control @error('phone') is-invalid @enderror" id="phone" placeholder="Enter Phone Number" name="phone">
-             @error('phone')
+            <input type="text" value="{{ old('phone') }}" class="form-control @error('phone') is-invalid @enderror" id="phone" placeholder="Enter Phone Number" name="phone">
+            @error('phone')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
             </span> @enderror
@@ -67,7 +67,7 @@
         </div>
         <div class="form-group">
             <label for="city">{{ __('City') }}</label>
-            <input type="text" class="form-control @error('city') is-invalid @enderror" id="city" placeholder="Enter City" name="city">
+            <input type="text" class="form-control @error('city') is-invalid @enderror" id="city" value="{{ old('city') }}" placeholder="Enter City" name="city">
             @error('city')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
@@ -75,7 +75,7 @@
         </div>
         <div class="form-group">
             <label for="address">{{ __('Address') }}</label>
-            <textarea class="form-control @error('address') is-invalid @enderror" rows="5" name="address" id="address"></textarea>
+            <textarea class="form-control @error('address') is-invalid @enderror" rows="5" name="address" id="address">{{ old('address') }}</textarea>
             @error('address')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
